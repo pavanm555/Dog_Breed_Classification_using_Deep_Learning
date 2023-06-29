@@ -1,0 +1,315 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dog Breed Classification</title>
+
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link
+      href="{{ url_for('static', filename='css/main.css') }}"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      #result {
+        color: white;
+      }
+      body {
+        background-image: linear-gradient(
+            rgba(20, 19, 30, 0.7),
+            rgba(20, 19, 30, 0.7)
+          ),
+          url("https://images.pexels.com/photos/2607544/pexels-photo-2607544.jpeg");
+        background-size: 100%;
+        color: white;
+        width: 83%;
+        height: 132%;
+      }
+      .img-upload {
+        padding-left: 10%;
+      }
+      h3 {
+        font-size: 25px;
+        font-weight: 600;
+        font-family: "Poppins", sans-serif;
+      }
+      h1 {
+        font-size: 49px;
+        font-weight: 600;
+        font-family: "Poppins", sans-serif;
+      }
+      p {
+        font-size: 18px;
+        font-family: "Poppins", sans-serif;
+      }
+      .upload {
+        padding-left: 0%;
+      }
+      .row {
+        padding-left: 10%;
+      }
+      .navbar-navbar-dark-bg-dark {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 10px;
+        background-color: #ffbf00 !important;
+        width: 120%;
+        padding: 1px 10%;
+        text-decoration: none;
+      }
+
+      .navbar-brand {
+        color: #fff;
+      }
+
+      .button {
+        background-color: #ffbf00;
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+      .upload-label {
+        display: inline-block;
+        padding: 10px 25px;
+        color: #fff;
+        background: #ffbf00;
+        font-size: 1em;
+        transition: all 0.4s;
+        cursor: pointer;
+      }
+      .upload-label:hover {
+        background: transparent;
+        color: #ffbf00;
+      }
+      .loader {
+        border: 8px solid #f3f3f3;
+        border-top: 8px solid #ffbf00;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+      }
+
+      /* ----facilities---- */
+      * {
+        box-sizing: border-box;
+      }
+      .facilities-col {
+        float: left;
+        width: 33.3%;
+        padding: 15px;
+      }
+
+      .row::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
+      /* ----facilities---- */
+      .facilities {
+        width: 110%;
+        margin: auto;
+        text-align: center;
+        padding-top: 55px;
+      }
+      .facilities-col {
+        flex-basis: 31%;
+        border-radius: 10px;
+        margin-bottom: 5%;
+        text-align: left;
+      }
+      .facilities-col img {
+        width: 100%;
+        height: 220px;
+        border-radius: 10px;
+      }
+      .facilities-col p {
+        padding: 0;
+      }
+      .facilities-col h3 {
+        margin-top: 16px;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar-navbar-dark-bg-dark">
+      <div class="container">
+        <div class="navbar-brand" href="#">
+          <h3><strong>We Love Dogs.</strong></h3>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div id="content" style="margin-top: 2em">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6 bd">
+              <h3>Welcome to</h3>
+              <h1>Ultimate Dog Breed Classification Resource</h1>
+
+              <p>
+                Discover the fascinating world of dog breeds through our
+                advanced classification system. Whether you're a dog lover,
+                breeder, or simply curious, our website is your go-to
+                destination for accurate and reliable dog breed identification.
+                Begin your journey into the world of dog breeds today.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="img-upload">
+      <div class="col-sm-6">
+        <div class="upload">
+          <h3>
+            Upload image here to identify the breed and experience the joy..
+          </h3>
+          <form
+            action="http://localhost:5000/"
+            id="upload-file"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            <label for="imageUpload" class="upload-label"
+              ><p>Choose...</p>
+            </label>
+            <input
+              type="file"
+              name="image"
+              id="imageUpload"
+              accept=".png, .jpg, .jpeg, .webp"
+            />
+          </form>
+
+          <div class="image-section" style="display: none">
+            <div class="img-preview">
+              <div id="imagePreview"></div>
+            </div>
+            <div>
+              <button type="button" class="button" id="btn-predict">
+                <p>Predict!</p>
+              </button>
+            </div>
+          </div>
+
+          <div class="loader" style="display: none"></div>
+
+          <h3>
+            <span id="result"> </span>
+          </h3>
+        </div>
+      </div>
+    </section>
+    <!---- Facilities ---->
+    <section class="facilities">
+      <h1>Check out some awesome breeds!</h1>
+      <div class="row">
+        <div class="facilities-col">
+          <img
+            src="https://www.dailypaws.com/thmb/B6yWhzGpQZsg3kxMzLn-hvGIF7M=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/siberian-husky-100800827-2000-9449ca147e0e4b819bce5189c2411188.jpg"
+          />
+          <h3>Siberian Husky</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/7210603/pexels-photo-7210603.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>Papillon</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://tocadobichomaringa.com.br/wp-content/uploads/2022/06/Lindo-Golden-Retriever.jpg"
+          />
+          <h3>Golden Retriever</h3>
+        </div>
+      </div>
+      <h1></h1>
+      <div class="row">
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/6806243/pexels-photo-6806243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>German Shepherd</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/7215724/pexels-photo-7215724.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>Dalmatian</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/3215610/pexels-photo-3215610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>Shih Tzu</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/13119047/pexels-photo-13119047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>Maltese dog</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://www.thesprucepets.com/thmb/Ban98TWwErm24qDpcooODdJN1uU=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/GettyImages-1273562658-78041f1f54494eb692b01e8c6ad2c187.jpg"
+          />
+          <h3>Saluki</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/54623/yorkshire-terrier-terrier-dog-small-dog-54623.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>Yorkshire Terrier</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/14116529/pexels-photo-14116529.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>Beagle</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://images.pexels.com/photos/4083564/pexels-photo-4083564.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          />
+          <h3>Chow Chow</h3>
+        </div>
+        <div class="facilities-col">
+          <img
+            src="https://www.k9web.com/wp-content/uploads/2020/12/great-dane-in-the-field-780x524.jpg"
+          />
+          <h3>Great Dane</h3>
+        </div>
+      </div>
+      <h1>Thank you, Visit again!</h1>
+      <br /><br />
+    </section>
+  </body>
+  <footer>
+    <script
+      src="{{ url_for('static', filename='js/main.js') }}"
+      type="text/javascript"
+    ></script>
+  </footer>
+</html>
